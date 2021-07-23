@@ -1,0 +1,2 @@
+rootProject.name = "Multithreading_and_Async"
+include ':app'
