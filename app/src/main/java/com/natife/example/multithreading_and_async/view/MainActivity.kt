@@ -24,9 +24,11 @@ class MainActivity : AppCompatActivity() {
             adapter = this@MainActivity.adapter
         }
 
+        adapter.add(0)
+
         viewModel.data
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 Log.d("TEST", "Item: $it")
                 adapter.add(it)
