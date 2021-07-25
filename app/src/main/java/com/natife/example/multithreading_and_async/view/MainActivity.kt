@@ -1,6 +1,7 @@
 package com.natife.example.multithreading_and_async.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(Schedulers.io())
             .subscribe {
+                Log.d("TEST", "Item: $it")
                 adapter.add(it)
             }
     }
