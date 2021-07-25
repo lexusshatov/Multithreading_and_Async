@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.natife.example.multithreading_and_async.databinding.ActivityMainBinding
 import com.natife.example.multithreading_and_async.viewmodel.MainActivityViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainActivityViewModel>()
@@ -22,9 +26,13 @@ class MainActivity : AppCompatActivity() {
             adapter = this@MainActivity.adapter
         }
 
-        viewModel.data.observe(this, {
-            Log.d("TEST", "Item: $it")
-            adapter.add(it)
-        })
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.data.collect {
+                runOnUiThread {
+                    Log.d("TEST", "Item: $it")
+                    adapter.add(it)
+                }
+            }
+        }
     }
 }
