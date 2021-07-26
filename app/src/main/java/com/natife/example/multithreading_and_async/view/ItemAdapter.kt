@@ -1,6 +1,5 @@
 package com.natife.example.multithreading_and_async.view
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,10 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.natife.example.multithreading_and_async.databinding.RecyclerItemBinding
 
-class ItemAdapter<T: Any> :
-    ListAdapter<T, ItemAdapter.ViewHolder<T>>(ItemDiffCallback<T>()) {
+class ItemAdapter :
+    ListAdapter<String, ItemAdapter.ViewHolder>(ItemDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<T> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = RecyclerItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -20,35 +19,34 @@ class ItemAdapter<T: Any> :
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<T>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
-    class ViewHolder<T>(
+    class ViewHolder(
         private val binding: RecyclerItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: T) {
+        fun bind(item: String) {
             with(binding) {
-                recyclerItem.text = item.toString()
+                recyclerItem.text = item
             }
         }
     }
 
-    class ItemDiffCallback<T> : DiffUtil.ItemCallback<T>() {
+    class ItemDiffCallback : DiffUtil.ItemCallback<String>() {
 
-        override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
 
-        @SuppressLint("DiffUtilEquals")
-        override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
 
     }
 
-    fun add(item: T) {
+    fun add(item: String) {
         submitList(currentList + item)
     }
 }

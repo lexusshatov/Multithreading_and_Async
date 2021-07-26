@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainActivityViewModel>()
     private lateinit var binding: ActivityMainBinding
-    private val adapter = ItemAdapter<String>()
+    private val adapter = ItemAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
