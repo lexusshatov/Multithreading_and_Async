@@ -29,7 +29,7 @@ class ItemAdapter :
 
         fun bind(item: String) {
             with(binding) {
-                recyclerItem.text = item.toString()
+                recyclerItem.text = item
             }
         }
     }
