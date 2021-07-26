@@ -1,5 +1,6 @@
 package com.natife.example.multithreading_and_async.view
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,10 +8,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.natife.example.multithreading_and_async.databinding.RecyclerItemBinding
 
-class ItemAdapter :
-    ListAdapter<Int, ItemAdapter.ViewHolder>(ItemDiffCallback()) {
+class ItemAdapter<T: Any> :
+    ListAdapter<T, ItemAdapter.ViewHolder<T>>(ItemDiffCallback<T>()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<T> {
         val binding = RecyclerItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -19,33 +20,35 @@ class ItemAdapter :
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<T>, position: Int) {
         holder.bind(currentList[position])
     }
 
-    class ViewHolder(
+    class ViewHolder<T>(
         private val binding: RecyclerItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Int) {
+        fun bind(item: T) {
             with(binding) {
                 recyclerItem.text = item.toString()
             }
         }
     }
 
-    class ItemDiffCallback : DiffUtil.ItemCallback<Int>() {
+    class ItemDiffCallback<T> : DiffUtil.ItemCallback<T>() {
 
-        override fun areItemsTheSame(oldItem: Int, newItem: Int): Boolean {
+        override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Int, newItem: Int): Boolean {
+        @SuppressLint("DiffUtilEquals")
+        override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
             return oldItem == newItem
         }
+
     }
 
-    fun add(item: Int) {
+    fun add(item: T) {
         submitList(currentList + item)
     }
 }
