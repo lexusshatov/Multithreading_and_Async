@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.natife.example.multithreading_and_async.databinding.ActivityMainBinding
 import com.natife.example.multithreading_and_async.viewmodel.MainActivityViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainActivityViewModel>()
@@ -27,10 +30,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.data.collect {
-                runOnUiThread {
-                    Log.d("TEST", "Item: $it")
-                    adapter.add(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.data.collect {
+                    withContext(Dispatchers.Main) {
+                        Log.d("TEST", "Item: $it")
+                        adapter.add(it)
+                    }
                 }
             }
         }
