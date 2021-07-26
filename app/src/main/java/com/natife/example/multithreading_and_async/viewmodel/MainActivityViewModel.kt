@@ -1,16 +1,19 @@
 package com.natife.example.multithreading_and_async.viewmodel
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
 import kotlin.random.Random
 
 class MainActivityViewModel : ViewModel() {
     private val random = Random(System.nanoTime())
-    val data = flow {
-        while (true) {
-            emit(random.nextInt(0, 1000))
-            delay(random.nextInt(0, 2000).toLong())
+    val data = generateSequence {
+        runBlocking {
+            delay(1000)
         }
+        random.nextInt(0, 1000)
     }
+        .asFlow()
+        .map { it.toString() }
 }

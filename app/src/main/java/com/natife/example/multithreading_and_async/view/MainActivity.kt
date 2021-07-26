@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainActivityViewModel>()
     private lateinit var binding: ActivityMainBinding
-    private val adapter = ItemAdapter()
+    private val adapter = ItemAdapter<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
