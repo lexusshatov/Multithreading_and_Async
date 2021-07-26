@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.natife.example.multithreading_and_async.databinding.RecyclerItemBinding
 
-class ItemAdapter(private val itemList: MutableList<Int> = mutableListOf()) :
+class ItemAdapter :
     ListAdapter<Int, ItemAdapter.ViewHolder>(ItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,8 +46,6 @@ class ItemAdapter(private val itemList: MutableList<Int> = mutableListOf()) :
     }
 
     fun add(item: Int) {
-        itemList.add(item)
-        submitList(itemList)
-        notifyDataSetChanged()
+        submitList(currentList + item)
     }
 }
